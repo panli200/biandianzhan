@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+}
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.header {
+    background: #000;
+    padding: 10px;
+    border: 2px solid #00f;
+    margin-bottom: 20px;
+}
+.metrics {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.metric-group .label {
+    color: #fff;
+    font-weight: bold;
+}
+.metric-group .value {
+    color: yellow;
+}
+.metric-group .sub-value {
+    color: cyan;
+}
+.metric-group .pink-value {
+    color: pink;
+}
+.metric-group .white-value {
+    color: white;
+}
+.schematic {
+    background: #222;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
