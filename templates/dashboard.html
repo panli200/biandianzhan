@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Energy Dashboard</title>
+  <link rel="stylesheet" href="static/styles.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Energy Monitoring Dashboard</h1>
+    
+    <div class="grid">
+      {% for title, chart in graphs.items() %}
+        <div class="card">
+          <h2>{{ title }}</h2>
+          {{ chart|safe }}
+        </div>
+      {% endfor %}
+    </div>
+  
+</body>
+</html>
+

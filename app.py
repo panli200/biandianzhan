@@ -1,31 +1,35 @@
 from flask import Flask, render_template
-from datetime import datetime
+import plotly.graph_objs as go
+import plotly.offline as pyo
+import random
+import datetime
 
 app = Flask(__name__)
 
-def get_electrical_data():
-    # Simulated real-time data
-    return {
-        'ux': 73.00,
-        'current': 49.00,
-        'power': 229.00,
-        'reactive': 253.00,
-        'cos': 0.39,
-        'ua': 75.00,
-        'ub': 43.00,
-        'uc': 78.00,
-        'ux2': 75.00,
-        'ub2': 8.00,
-        'uc2': 8.00,
-        'uab': 79.00
-    }
+def generate_data():
+    now = datetime.datetime.now()
+    times = [(now - datetime.timedelta(minutes=5*i)).strftime('%H:%M') for i in reversed(range(12))]
+    values = [round(random.uniform(1.0, 2.5), 2) for _ in range(12)]
+    return times, values
+
+def create_chart(title, y_label, color):
+    times, values = generate_data()
+    trace = go.Scatter(x=times, y=values, mode='lines+markers', line=dict(color=color))
+    layout = go.Layout(title=title, xaxis_title='Time', yaxis_title=y_label, margin=dict(t=40, b=40, l=40, r=20))
+    fig = go.Figure(data=[trace], layout=layout)
+    return pyo.plot(fig, output_type='div', include_plotlyjs=False)
 
 @app.route('/')
-def index():
-    data = get_electrical_data()
-    current_time = datetime.now().strftime('%H:%M:%S')
-    current_date = datetime.now().strftime('%d/%m/%Y')
-    return render_template('index.html', data=data, current_time=current_time, current_date=current_date)
+def dashboard():
+    graphs = {
+        'Electricity Usage': create_chart('Electricity Usage', 'kW', '#3b82f6'),
+        'Solar Output': create_chart('Solar Output', 'kW', '#facc15'),
+        'Battery Storage': create_chart('Battery Storage', 'kWh', '#10b981'),
+        'Grid Feed-In': create_chart('Grid Feed-In', 'kW', '#ef4444'),
+        'HVAC Power': create_chart('HVAC Power', 'kW', '#8b5cf6'),
+        'Lighting': create_chart('Lighting', 'kW', '#f59e0b'),
+    }
+    return render_template('dashboard.html', graphs=graphs)
 
 if __name__ == '__main__':
     app.run(debug=True)
